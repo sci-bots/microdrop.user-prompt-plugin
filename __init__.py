@@ -140,10 +140,10 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
                                         parent=parent_window,
                                         flags=(gtk.DIALOG_MODAL |
                                                gtk.DIALOG_DESTROY_WITH_PARENT),
-                                        buttons=(gtk.STOCK_CANCEL,
-                                                 gtk.RESPONSE_REJECT,
-                                                 gtk.STOCK_OK,
-                                                 gtk.RESPONSE_ACCEPT))
+                                        buttons=(gtk.STOCK_OK,
+                                                 gtk.RESPONSE_ACCEPT,
+                                                 gtk.STOCK_CANCEL,
+                                                 gtk.RESPONSE_REJECT))
                     # Add specified message to dialog content area.
                     message_label = gtk.Label(step_options['message'])
                     dialog.get_content_area().pack_start(message_label)
