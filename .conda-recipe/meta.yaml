@@ -18,7 +18,6 @@ build:
 requirements:
   build:
     - flatland-fork
-    - microdrop-plugin-template
     - microdrop >=2.4.0
     - microdrop-plugin-manager >=0.10
     - path_helpers >=0.2.post4
@@ -26,7 +25,6 @@ requirements:
 
   run:
     - flatland-fork
-    - microdrop-plugin-template
     - microdrop >=2.4.0
     - microdrop-plugin-manager >=0.10
     - path_helpers >=0.2.post4
