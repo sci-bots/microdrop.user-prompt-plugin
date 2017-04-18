@@ -182,3 +182,7 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
 
 
 PluginGlobals.pop_env()
+
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
