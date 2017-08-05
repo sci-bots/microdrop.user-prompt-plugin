@@ -4,7 +4,7 @@ source:
   git_url: ../
 
 package:
-  name: user_prompt_plugin
+  name: microdrop.user-prompt-plugin
 {% if GIT_DESCRIBE_NUMBER > '0' %}
   version: {{ GIT_DESCRIBE_TAG[1:] }}.post{{ GIT_DESCRIBE_NUMBER }}
 {% else %}
@@ -32,7 +32,7 @@ requirements:
 
 test:
   commands:
-    - python -c "import importlib; import mpm.api; import os; import sys; sys.path.insert(0, mpm.api.MICRODROP_CONDA_SHARE.joinpath('plugins', 'available')); importlib.import_module(os.environ.get('PKG_NAME'))"
+    - python -m mpm.bin.import_test -a {{ PKG_NAME }}
 
 about:
   home: http://github.com/wheeler-microfluidics/user-prompt-plugin
