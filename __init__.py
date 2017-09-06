@@ -16,16 +16,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with user_prompt_plugin.  If not, see <http://www.gnu.org/licenses/>.
 """
-from datetime import datetime
 import logging
 import json
-import sys
-import traceback
 
-from flatland import Integer, Boolean, Form, String
-from flatland.validation import ValueAtLeast, ValueAtMost
+from flatland import Form, String
 from microdrop.app_context import get_app
-from microdrop.logger import logger
 from microdrop.plugin_helpers import StepOptionsController, get_plugin_info
 from microdrop.plugin_manager import (PluginGlobals, Plugin, IPlugin,
                                       implements, emit_signal)
