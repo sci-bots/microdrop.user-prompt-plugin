@@ -46,6 +46,9 @@ PluginGlobals.push_env('microdrop.managed')
 class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
     """
     This class is automatically registered with the PluginManager.
+
+    .. versionchanged:: 2.2.1
+        Use :data:`__version__` for plugin version.
     """
     implements(IPlugin)
     # Without the follow line, cannot inherit from both `Plugin` and
