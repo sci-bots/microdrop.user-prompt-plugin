@@ -80,6 +80,11 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
 
     @gtk_threadsafe
     def create_ui(self):
+        '''
+        .. versionchanged:: 2.1.2
+            Wrap with :func:`gtk_threadsafe` decorator to ensure the code runs
+            in the main GTK thread.
+        '''
         self.menu = gtk.Menu()
         self.menu_item = gtk.MenuItem(self.name)
         self.step_options_menu = gtk.MenuItem('Set step prompt...')
@@ -94,6 +99,11 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
 
     @gtk_threadsafe
     def destroy_ui(self):
+        '''
+        .. versionchanged:: 2.1.2
+            Wrap with :func:`gtk_threadsafe` decorator to ensure the code runs
+            in the main GTK thread.
+        '''
         app = get_app()
         app.main_window_controller.menu_tools.remove(self.menu_item)
         self.menu_item.destroy()
@@ -109,6 +119,11 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
 
     @gtk_threadsafe
     def on_step_options_menu__activate(self, widget):
+        '''
+        .. versionchanged:: 2.1.2
+            Wrap with :func:`gtk_threadsafe` decorator to ensure the code runs
+            in the main GTK thread.
+        '''
         step_options_dialog = (pg.ui.form_view_dialog
                                .FormViewDialog(self.StepFields))
         ok, values = step_options_dialog.run(values=self.get_step_options())
@@ -117,7 +132,7 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
 
     @gtk_threadsafe
     def on_step_run(self):
-        """
+        '''
         Handler called whenever a step is executed. Note that this signal
         is only emitted in realtime mode or if a protocol is running.
 
@@ -130,7 +145,11 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
             None
             'Repeat' - repeat the step
             or 'Fail' - unrecoverable error (stop the protocol)
-        """
+
+        .. versionchanged:: 2.1.2
+            Wrap with :func:`gtk_threadsafe` decorator to ensure the code runs
+            in the main GTK thread.
+        '''
         app = get_app()
         logger.info('[UserPromptPlugin] on_step_run(): step #%d',
                     app.protocol.current_step_number)
