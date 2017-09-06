@@ -19,19 +19,23 @@ requirements:
   build:
     - flatland-fork
     - microdrop >=2.4.0
-    - microdrop-plugin-manager >=0.11
+    # .. versionchanged:: 2.2.1
+    - microdrop-plugin-manager >=0.24
     - path_helpers >=0.2.post4
     - wheeler.pygtkhelpers
 
   run:
     - flatland-fork
     - microdrop >=2.4.0
-    - microdrop-plugin-manager >=0.11
+    # .. versionchanged:: 2.2.1
+    - microdrop-plugin-manager >=0.24
     - path_helpers >=0.2.post4
     - wheeler.pygtkhelpers
 
 test:
   commands:
+    # .. versionchanged:: 2.2.1
+    #     Use simplified import test.
     - python -m mpm.bin.import_test -a {{ PKG_NAME }}
 
 about:

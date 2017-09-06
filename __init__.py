@@ -16,16 +16,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with user_prompt_plugin.  If not, see <http://www.gnu.org/licenses/>.
 """
-from datetime import datetime
 import logging
 import json
-import sys
-import traceback
 
-from flatland import Integer, Boolean, Form, String
-from flatland.validation import ValueAtLeast, ValueAtMost
+from flatland import Form, String
 from microdrop.app_context import get_app
-from microdrop.logger import logger
 from microdrop.plugin_helpers import StepOptionsController, get_plugin_info
 from microdrop.plugin_manager import (PluginGlobals, Plugin, IPlugin,
                                       implements, emit_signal)
@@ -38,6 +33,11 @@ import pygtkhelpers.utils
 import gobject
 import gtk
 
+from ._version import get_versions
+
+__version__ = get_versions()['version']
+del get_versions
+
 logger = logging.getLogger(__name__)
 
 PluginGlobals.push_env('microdrop.managed')
@@ -46,6 +46,9 @@ PluginGlobals.push_env('microdrop.managed')
 class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
     """
     This class is automatically registered with the PluginManager.
+
+    .. versionchanged:: 2.2.1
+        Use :data:`__version__` for plugin version.
     """
     implements(IPlugin)
     # Without the follow line, cannot inherit from both `Plugin` and
@@ -54,7 +57,7 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
     # [1]: http://code.activestate.com/recipes/204197-solving-the-metaclass-conflict/
     __metaclass__ = classmaker()
     pg.utils.gsignal('step-prompt-accepted', object)
-    version = get_plugin_info(path(__file__).parent).version
+    version = __version__
     plugin_name = get_plugin_info(path(__file__).parent).plugin_name
 
     StepFields = Form.of(
@@ -171,18 +174,14 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
 
                 # Signal that step processing has completed successfully.
                 emit_signal('on_step_complete', [self.name, None])
-            except ValueError, exception:
+            except ValueError:
                 logger.warning('Protocol stopped.')
                 # An error occurred while initializing Analyst remote control.
                 emit_signal('on_step_complete', [self.name, 'Fail'])
-            except:
+            except Exception:
                 logger.error('Protocol stopped.', exc_info=True)
                 # An error occurred while initializing Analyst remote control.
                 emit_signal('on_step_complete', [self.name, 'Fail'])
 
 
 PluginGlobals.pop_env()
-
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
