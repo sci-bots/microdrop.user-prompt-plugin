@@ -38,6 +38,11 @@ import pygtkhelpers.utils
 import gobject
 import gtk
 
+from ._version import get_versions
+
+__version__ = get_versions()['version']
+del get_versions
+
 logger = logging.getLogger(__name__)
 
 PluginGlobals.push_env('microdrop.managed')
@@ -54,7 +59,7 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
     # [1]: http://code.activestate.com/recipes/204197-solving-the-metaclass-conflict/
     __metaclass__ = classmaker()
     pg.utils.gsignal('step-prompt-accepted', object)
-    version = get_plugin_info(path(__file__).parent).version
+    version = __version__
     plugin_name = get_plugin_info(path(__file__).parent).plugin_name
 
     StepFields = Form.of(
@@ -171,18 +176,14 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
 
                 # Signal that step processing has completed successfully.
                 emit_signal('on_step_complete', [self.name, None])
-            except ValueError, exception:
+            except ValueError:
                 logger.warning('Protocol stopped.')
                 # An error occurred while initializing Analyst remote control.
                 emit_signal('on_step_complete', [self.name, 'Fail'])
-            except:
+            except Exception:
                 logger.error('Protocol stopped.', exc_info=True)
                 # An error occurred while initializing Analyst remote control.
                 emit_signal('on_step_complete', [self.name, 'Fail'])
 
 
 PluginGlobals.pop_env()
-
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
