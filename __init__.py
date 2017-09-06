@@ -26,6 +26,7 @@ from microdrop.plugin_manager import (PluginGlobals, Plugin, IPlugin,
                                       implements, emit_signal)
 from path_helpers import path
 from noconflict import classmaker
+from pygtkhelpers.gthreads import gtk_threadsafe
 import pygtkhelpers as pg
 import pygtkhelpers.schema
 import pygtkhelpers.ui.form_view_dialog
@@ -77,6 +78,7 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
         self.connect('step-prompt-accepted', lambda obj, values:
                      logger.info('Step prompt accepted (`%s`)', values))
 
+    @gtk_threadsafe
     def create_ui(self):
         self.menu = gtk.Menu()
         self.menu_item = gtk.MenuItem(self.name)
@@ -90,6 +92,7 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
         self.menu_item.show_all()
         app.main_window_controller.menu_tools.append(self.menu_item)
 
+    @gtk_threadsafe
     def destroy_ui(self):
         app = get_app()
         app.main_window_controller.menu_tools.remove(self.menu_item)
@@ -104,6 +107,7 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
     def on_plugin_enable(self):
         self.create_ui()
 
+    @gtk_threadsafe
     def on_step_options_menu__activate(self, widget):
         step_options_dialog = (pg.ui.form_view_dialog
                                .FormViewDialog(self.StepFields))
@@ -111,6 +115,7 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
         if ok:
             self.set_step_values(values)
 
+    @gtk_threadsafe
     def on_step_run(self):
         """
         Handler called whenever a step is executed. Note that this signal

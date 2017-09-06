@@ -22,7 +22,7 @@ requirements:
     # .. versionchanged:: 2.2.1
     - microdrop-plugin-manager >=0.24
     - path_helpers >=0.2.post4
-    - wheeler.pygtkhelpers
+    - wheeler.pygtkhelpers >=0.18
 
   run:
     - flatland-fork
@@ -30,7 +30,7 @@ requirements:
     # .. versionchanged:: 2.2.1
     - microdrop-plugin-manager >=0.24
     - path_helpers >=0.2.post4
-    - wheeler.pygtkhelpers
+    - wheeler.pygtkhelpers >=0.18
 
 test:
   commands:
