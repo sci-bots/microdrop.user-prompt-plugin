@@ -2,6 +2,7 @@ import logging
 import json
 
 from flatland import Form, String
+from logging_helpers import _L
 from microdrop.app_context import get_app
 from microdrop.plugin_helpers import StepOptionsController, get_plugin_info
 from microdrop.plugin_manager import (PluginGlobals, Plugin, IPlugin,
@@ -56,7 +57,7 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
         self.start_time = None
         self.step_options_menu = None
         self.connect('step-prompt-accepted', lambda obj, values:
-                     logger.info('Step prompt accepted (`%s`)', values))
+                     _L().info('Step prompt accepted (`%s`)', values))
 
     @gtk_threadsafe
     def create_ui(self):
@@ -102,11 +103,22 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
         .. versionchanged:: 2.1.2
             Wrap with :func:`gtk_threadsafe` decorator to ensure the code runs
             in the main GTK thread.
+
+        .. versionchanged:: X.X.X
+            Validate schema before saving step options.
         '''
         step_options_dialog = (pg.ui.form_view_dialog
                                .FormViewDialog(self.StepFields))
         ok, values = step_options_dialog.run(values=self.get_step_options())
         if ok:
+            if values['schema'].strip():
+                try:
+                    schema = json.loads(values['schema'])
+                    pg.schema.get_fields_frame(schema)
+                except Exception as exception:
+                    _L().error('Invalid schema `%s`: `%s`', values['schema'],
+                               exception, exc_info=True)
+                    values['schema'] = ''
             self.set_step_values(values)
 
     @gtk_threadsafe
