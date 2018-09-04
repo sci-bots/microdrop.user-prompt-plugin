@@ -66,7 +66,7 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
             Wrap with :func:`gtk_threadsafe` decorator to ensure the code runs
             in the main GTK thread.
 
-        .. versionchanged:: X.X.X
+        .. versionchanged:: 2.3.2
             Move ``Set step prompt...`` menu item directly under main ``Tools``
             menu.
         '''
@@ -104,7 +104,7 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
             Wrap with :func:`gtk_threadsafe` decorator to ensure the code runs
             in the main GTK thread.
 
-        .. versionchanged:: X.X.X
+        .. versionchanged:: 2.3.2
             Validate schema before saving step options.
         '''
         step_options_dialog = (pg.ui.form_view_dialog
