@@ -54,8 +54,6 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
         self.name = self.plugin_name
         self.timeout_id = None
         self.start_time = None
-        self.menu_item = None
-        self.menu = None
         self.step_options_menu = None
         self.connect('step-prompt-accepted', lambda obj, values:
                      logger.info('Step prompt accepted (`%s`)', values))
@@ -66,18 +64,19 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
         .. versionchanged:: 2.1.2
             Wrap with :func:`gtk_threadsafe` decorator to ensure the code runs
             in the main GTK thread.
+
+        .. versionchanged:: X.X.X
+            Move ``Set step prompt...`` menu item directly under main ``Tools``
+            menu.
         '''
-        self.menu = gtk.Menu()
-        self.menu_item = gtk.MenuItem(self.name)
-        self.step_options_menu = gtk.MenuItem('Set step prompt...')
+        self.step_options_menu = gtk.MenuItem('_Set step prompt...')
+        self.step_options_menu.props.use_underline = True
+        self.step_options_menu.set_tooltip_text(self.name)
         self.step_options_menu.connect('activate',
                                        self.on_step_options_menu__activate)
+        self.step_options_menu.show()
         app = get_app()
-        self.menu.append(self.step_options_menu)
-        self.menu.show_all()
-        self.menu_item.set_submenu(self.menu)
-        self.menu_item.show_all()
-        app.main_window_controller.menu_tools.append(self.menu_item)
+        app.main_window_controller.menu_tools.append(self.step_options_menu)
 
     @gtk_threadsafe
     def destroy_ui(self):
@@ -87,9 +86,7 @@ class UserPromptPlugin(Plugin, gobject.GObject, StepOptionsController):
             in the main GTK thread.
         '''
         app = get_app()
-        app.main_window_controller.menu_tools.remove(self.menu_item)
-        self.menu_item.destroy()
-        self.menu.destroy()
+        app.main_window_controller.menu_tools.remove(self.step_options_menu)
 
     ###########################################################################
     # Callback methods
